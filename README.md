@@ -6,13 +6,13 @@
 
 ### 音频相关
 
-* 基础知识
+* ~~基础知识~~
 
-* 音频数据的采集
+* ~~音频数据的采集~~ 
 
-* 音频数据的播放
+* ~~音频数据的播放~~
 
-* 熟悉Android采集和播放的API: AudioRecord和AudioTrick
+* ~~熟悉Android采集和播放的API: AudioRecord和AudioTrick~~
 
 * 学习OpenSL ES, 对Android平台的音频进行渲染
 
@@ -44,7 +44,11 @@
 
 * 学习FFmepg, 编写一款简单的视频播放器
 
+### 业界开源播放器学习
+
 * 深入学习一些音视频领域的开源项目，如 webrtc，ffmpeg，ijkplayer，librtmp 等等
+
+### 流媒体协议
 
 * 深入研究音视频相关的网络协议，如 rtmp，hls，以及封包格式，如：flv，mp4
 
@@ -53,3 +57,9 @@
 * 设计一款简单的视频SDK, 包括软解和硬解的兼容
 
 * 基础视频SDK, 设计一款短视频应用
+
+## 参考资料
+
+* http://blog.51cto.com/ticktick/category15.html
+
+* <<音视频开发进阶指南>>
