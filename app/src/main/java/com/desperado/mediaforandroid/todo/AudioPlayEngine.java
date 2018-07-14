@@ -1,4 +1,4 @@
-package com.desperado.mediaforandroid;
+package com.desperado.mediaforandroid.todo;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -7,6 +7,7 @@ import java.io.IOException;
 
 /**
  * Created by kamlin on 18-6-9.
+ * 未完成
  */
 public class AudioPlayEngine extends Engine {
 

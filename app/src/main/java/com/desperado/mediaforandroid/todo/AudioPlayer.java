@@ -1,4 +1,4 @@
-package com.desperado.mediaforandroid;
+package com.desperado.mediaforandroid.todo;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -7,6 +7,7 @@ import android.util.Log;
 
 /**
  * Created by kamlin on 18-6-9.
+ * 未完成
  */
 public class AudioPlayer {
 

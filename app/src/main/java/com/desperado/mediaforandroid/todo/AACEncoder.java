@@ -1,4 +1,4 @@
-package com.desperado.mediaforandroid;
+package com.desperado.mediaforandroid.todo;
 
 import android.annotation.TargetApi;
 import android.media.AudioFormat;
@@ -15,6 +15,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Created by kamlin on 2018/6/28.
+ * 未完成
  */
 public class AACEncoder {
 

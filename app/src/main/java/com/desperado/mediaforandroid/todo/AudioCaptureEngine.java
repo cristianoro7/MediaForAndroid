@@ -1,6 +1,8 @@
-package com.desperado.mediaforandroid;
+package com.desperado.mediaforandroid.todo;
 
 import android.util.Log;
+
+import com.desperado.mediaforandroid.audio.AudioCapture;
 
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
@@ -12,6 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by kamlin on 18-6-9.
+ * 未完成
  */
 public class AudioCaptureEngine extends Engine implements AudioCapture.OnAudioCaptureListener,
     AACEncoder.OnBufferAvailableListener {
@@ -28,7 +31,7 @@ public class AudioCaptureEngine extends Engine implements AudioCapture.OnAudioCa
         if (filePath != null) {
             try {
                 outputStream = new DataOutputStream(new FileOutputStream(filePath));
-                audioCapture.setListener(this);
+                audioCapture.setOnAudioCaptureListener(this);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Log.d(TAG, "AudioCaptureEngine: cannot find the file");

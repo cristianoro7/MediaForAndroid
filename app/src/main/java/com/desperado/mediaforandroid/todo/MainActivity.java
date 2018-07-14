@@ -1,4 +1,4 @@
-package com.desperado.mediaforandroid;
+package com.desperado.mediaforandroid.todo;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.desperado.mediaforandroid.R;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class MainActivity extends AppCompatActivity {
