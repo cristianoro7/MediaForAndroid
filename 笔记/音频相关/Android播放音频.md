@@ -1,3 +1,55 @@
+# WAV格式
+
+* ``WAV``是微软开发的一种**无损压缩**音频文件格式，它的格式比较简单， 只在原始的``PCM``数据上加了一下元信息。 这种文件格式主要分为两个部分：
+  1. 头文件：主要记录音频文件的一些元信息， 方便播放器等进行识别。例如：采样率、通道数、位宽等
+  2. 数据块：也就是``PCM``数据
+* 这种文件格式由于没有压缩， 所以音质会比较好，但是文件也会比较大。
+
+## WAV文件头
+
+![img](http://soundfile.sapp.org/doc/WaveFormat/wav-sound-format.gif)
+
+* ``WAV``文件主要分为三部分：
+  1. ``RIFF``块
+  2. ``fmt``块
+  3. ``data``块
+
+### RIFF块
+
+``ChunkID``: 取值为“RIFF”
+
+`` ChunkSize ``:  排除``ChunkId``和``ChunkSize``后，文件剩余的大小
+
+``Format``:  固定值为”WAVE“	
+
+
+
+### ``fmt``块
+
+``Subchunk1ID``: 固定值为“fmt ”; 占4字节（fmt后面还跟着一个空格凑够4字节）
+
+`` Subchunk1Size``: 固定值为16， 标识``fmt``块除了``Subchunk1ID``外占用的字节大小
+
+``AudioFormat``: 固定值1
+
+``NumChannels``:  音频的通道数
+
+``SampleRate``:  音频的采样率
+
+``ByteRate``: 1S的音频数据占用的字节数，计算公式：``SampleRate * NumChannels * BitsPerSample/8``
+
+``BlockAlign``:  一个音频采样点占用的字节数， 计算公式：``NumChannels * BitsPerSample/8``
+
+``BitsPerSample``: 音频数据的位宽
+
+
+
+### ``data``数据块
+
+``Subchunk2ID``: 固定为``data``
+
+``Subchunk2Size``:  音频数据的占用的字节大小
+
 # Android提供的API
 
 * Android提供了3套API给我们:

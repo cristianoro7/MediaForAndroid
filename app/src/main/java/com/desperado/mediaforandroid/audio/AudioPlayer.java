@@ -1,4 +1,4 @@
-package com.desperado.mediaforandroid.todo;
+package com.desperado.mediaforandroid.audio;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
