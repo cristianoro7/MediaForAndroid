@@ -6,38 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".todo.MainActivity">
 
-    <Button
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="start capture"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="onAudioCapture"/>
+    <!--<Button-->
+        <!--android:id="@+id/start"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="start capture"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--android:onClick="onAudioCapture"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/stop"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="stop capture"-->
+        <!--android:onClick="onAudioCapture"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/start_play"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--android:text="play"-->
+        <!--android:onClick="onAudioCapture"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/stop_play"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="stop play"-->
+        <!--app:layout_constraintBottom_toTopOf="parent"-->
+        <!--android:onClick="onAudioCapture"/>-->
 
     <Button
-        android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="stop capture"
-        android:onClick="onAudioCapture"/>
-
-    <Button
-        android:id="@+id/start_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        android:text="play"
-        android:onClick="onAudioCapture"/>
-
-    <Button
-        android:id="@+id/stop_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="stop play"
-        app:layout_constraintBottom_toTopOf="parent"
-        android:onClick="onAudioCapture"/>
+        android:background="@drawable/audio_shape_round_button"
+        android:text="录音"
+        android:textColor="#FFFFFF"
+        android:id="@+id/main_audio"/>
 
 </android.support.constraint.ConstraintLayout>

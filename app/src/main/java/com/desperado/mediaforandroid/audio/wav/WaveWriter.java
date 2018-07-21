@@ -54,16 +54,22 @@ public class WaveWriter {
     }
 
     public boolean closeFile() {
+        boolean ret = false;
         if (dataOutputStream != null) {
             try {
-                return writeDataSize();
+                ret = writeDataSize();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    dataOutputStream.close();
+                    dataOutputStream = null;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            dataOutputStream = null;
-            return true;
         }
-        return false;
+        return ret;
     }
 
     private boolean writeDataSize() throws IOException {
@@ -78,5 +84,4 @@ public class WaveWriter {
         }
         return false;
     }
-
 }

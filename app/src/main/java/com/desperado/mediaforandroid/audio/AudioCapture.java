@@ -13,9 +13,9 @@ public class AudioCapture {
 
     private AudioRecord mAudioRecord;
 
-    private static final int DEFAULT_SAMPLE_RATE = 44100; //默认采样率
-    private static final int DEFAULT_CHANNEL = AudioFormat.CHANNEL_IN_MONO; //单通道
-    private static final int SIMPLE_FORMAT = AudioFormat.ENCODING_PCM_16BIT; //16位 量化
+    public static final int DEFAULT_SAMPLE_RATE = 44100; //默认采样率
+    public static final int DEFAULT_CHANNEL = AudioFormat.CHANNEL_IN_MONO; //单通道
+    public static final int SIMPLE_FORMAT = AudioFormat.ENCODING_PCM_16BIT; //16位 量化
     private static final int DEFAULT_SOURCE_MIC = MediaRecorder.AudioSource.MIC; //声音从麦克风采集而来
 
     private volatile boolean isExit = true;

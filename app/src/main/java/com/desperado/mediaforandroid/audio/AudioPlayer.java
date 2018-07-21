@@ -15,7 +15,7 @@ public class AudioPlayer {
 
     private static final int SIMPLE_RATE = 44100; //采样率
     private static final int FORMAT = AudioFormat.ENCODING_PCM_16BIT; //量化位宽
-    private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_OUT_STEREO; //双通道
+    private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_OUT_MONO; //双通道
     private static final int PLAY_TYPE = AudioManager.STREAM_MUSIC; //播放模式
     private static final int PLAY_MODE = AudioTrack.MODE_STREAM;
 
