@@ -16,7 +16,7 @@
 
 * 学习OpenSL ES, 对Android平台的音频进行渲染
 
-* 学习MediaCodec API, 完成音频格式AAC的硬编和硬解
+* ~~学习MediaCodec API, 完成音频格式AAC的硬编和硬解~~
 
 ### 视频相关
 
