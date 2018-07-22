@@ -9,7 +9,6 @@ import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -17,8 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by kamlin on 18-6-9.
  * 未完成
  */
-public class AudioCaptureEngine extends Engine implements AudioCapture.OnAudioCaptureListener,
-    AACEncoder.OnBufferAvailableListener {
+public class AudioCaptureEngine extends Engine implements AudioCapture.OnAudioCaptureListener {
 
     private static final String TAG = "AudioCaptureEngine";
 
@@ -68,11 +66,5 @@ public class AudioCaptureEngine extends Engine implements AudioCapture.OnAudioCa
                 Log.d(TAG, "onAudioFrameCaptured: fail to write data!");
             }
         }
-    }
-
-    @Override
-    public boolean onFillInputBuffer(ByteBuffer byteBuffer) {
-        
-        return false;
     }
 }

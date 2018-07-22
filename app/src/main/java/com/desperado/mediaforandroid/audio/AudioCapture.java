@@ -20,6 +20,7 @@ public class AudioCapture {
 
     private volatile boolean isExit = true;
     private volatile boolean isStart = false;
+    private volatile boolean isUsingCallBack = true; //外部使用回调接口接收数据。为false的话, 外部需要显示调用readData来获得音频原始数据
 
     private Thread captureThread;
 
@@ -27,6 +28,10 @@ public class AudioCapture {
 
     public void setOnAudioCaptureListener(OnAudioCaptureListener listener) {
         this.listener = listener;
+    }
+
+    public void setUsingCallBack(boolean usingCallBack) {
+        isUsingCallBack = usingCallBack;
     }
 
     public boolean start() {
@@ -79,7 +84,7 @@ public class AudioCapture {
 
         @Override
         public void run() {
-            while (!isExit) {
+            while (!isExit && isUsingCallBack) {
                 byte[] buffer = new byte[1024 * 2]; //每次拿2k
                 int result = mAudioRecord.read(buffer, 0, buffer.length);
                 if (result == AudioRecord.ERROR_BAD_VALUE) {
@@ -113,5 +118,21 @@ public class AudioCapture {
             return null;
         }
         return audioRecord;
+    }
+
+    public int readData(byte[] buffer, int off, int len) {
+        if (isUsingCallBack) {
+            throw new IllegalStateException("in callback mode, please fet pcm data via call back!");
+        }
+        if (buffer != null) {
+            int ret = mAudioRecord.read(buffer, off, len);
+            if (ret == AudioRecord.ERROR_BAD_VALUE) {
+                Log.d(TAG, "run: ERROR_BAD_VALUE");
+            } else if (ret == AudioRecord.ERROR_INVALID_OPERATION) {
+                Log.d(TAG, "run: ERROR_INVALID_OPERATION");
+            }
+            return ret;
+        }
+        return -1;
     }
 }

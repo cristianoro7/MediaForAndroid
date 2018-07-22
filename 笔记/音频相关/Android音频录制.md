@@ -208,7 +208,7 @@ private class AudioCaptureRunnable implements Runnable {
 
 
 
-最后,附上完整[代码地址](https://github.com/cristianoro7/MediaForAndroid/blob/26eec8191baeacec40a3dc0a6a74e246421df7e5/app/src/main/java/com/desperado/mediaforandroid/audio/AudioCapture.java)。
+最后,附上完整[代码地址](https://github.com/cristianoro7/MediaForAndroid/blob/26eec8191baeacec40a3dc0a6a74e246421df7e5/app/src/main/java/com/desperado/mediaforandroid/audio/AudioCapture.java)。欢迎 `start` 和 `follow`
 
 ## 总结
 
@@ -226,3 +226,8 @@ private class AudioCaptureRunnable implements Runnable {
 
 
 * 《音视频开发进阶指南》
+
+
+
+> 由于本人能力水平限制，文章中难免会有错误。如果大家发现文章有不足之处，欢迎指出。
+

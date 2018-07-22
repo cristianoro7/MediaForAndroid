@@ -18,29 +18,26 @@ import android.widget.Toast;
 
 import com.desperado.mediaforandroid.R;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 /**
  * Created by kamlin on 18-7-21.
+ * demo, 仅供参考
  */
-public class AudioActivity extends AppCompatActivity implements View.OnClickListener, AudioCapture.OnAudioCaptureListener {
-
-    private AudioCapture mAudioCapture;
+public class AudioActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AudioPlayer mAudioPlayer;
 
     private WaveEncoder mWaveEncoder;
 
-    private AACEncoder mAacEncoder;
+    private AACEncoder mAACEncoder;
 
     private Button mBtnCaptureAndPlay;
-    private Button mBtnAACEncder;
+    private Button mBtnAACEncoder;
     private Button mBtnWaveEncoder;
-
-    private boolean isPlay = false;
-    private boolean isWaveEncode = false;
-    private boolean isAACEncode = false;
 
     private static final int AUDIO_RECORD_CODE = 111;
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 222;
@@ -53,7 +50,6 @@ public class AudioActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_audio);
         requestPermission();
         initView();
-        init();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -70,11 +66,11 @@ public class AudioActivity extends AppCompatActivity implements View.OnClickList
 
     private void initView() {
         mBtnCaptureAndPlay = findViewById(R.id.audio_btn_capture_play);
-        mBtnAACEncder = findViewById(R.id.audio_btn_aac_encoder);
+        mBtnAACEncoder = findViewById(R.id.audio_btn_aac_encoder);
         mBtnWaveEncoder = findViewById(R.id.audio_btn_capture_wave_encoder);
 
         mBtnCaptureAndPlay.setOnClickListener(this);
-        mBtnAACEncder.setOnClickListener(this);
+        mBtnAACEncoder.setOnClickListener(this);
         mBtnWaveEncoder.setOnClickListener(this);
 
         findViewById(R.id.audio_btn_capture_play_stop).setOnClickListener(this);
@@ -82,69 +78,68 @@ public class AudioActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.audio_btn_capture_wave_encoder_stop).setOnClickListener(this);
     }
 
-    private void init() {
-        mAudioCapture = new AudioCapture();
-        mAudioCapture.setOnAudioCaptureListener(this);
-        mAudioPlayer = new AudioPlayer();
-        mAacEncoder = new AACEncoder();
-        mWaveEncoder = new WaveEncoder();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.audio_btn_capture_play:
-                isPlay = true;
-                isAACEncode = false;
-                isWaveEncode = false;
                 performCaptureAndPlay();
                 break;
             case R.id.audio_btn_aac_encoder:
+                performCaptureAndAACEncode();
                 break;
             case R.id.audio_btn_capture_wave_encoder:
-                isWaveEncode = true;
-                isPlay = false;
-                isAACEncode = false;
                 performCaptureAndWaveEncode();
                 break;
             case R.id.audio_btn_capture_play_stop:
                 mAudioPlayer.stop();
                 break;
             case R.id.audio_btn_capture_wave_encoder_stop:
-                mWaveEncoder.closeFile();
+                mWaveEncoder.stop();
                 break;
-        }
-    }
-
-
-    @Override
-    public void onAudioFrameCaptured(byte[] bytes) {
-        if (isPlay) {
-            mAudioPlayer.play(bytes, 0, bytes.length);
-        } else if (isWaveEncode) {
-            mWaveEncoder.writeData(bytes, 0, bytes.length);
-        } else {
+            case R.id.audio_btn_aac_encoder_stop:
+                mAACEncoder.stop();
         }
     }
 
     private void performCaptureAndPlay() {
-        mAudioCapture.start();
+        if (mAudioPlayer != null) {
+            mAudioPlayer.stop();
+        }
+        mAudioPlayer = new AudioPlayer();
         mAudioPlayer.start();
     }
 
     private void performCaptureAndWaveEncode() {
-        boolean isOpenOk = false;
+        if (mWaveEncoder != null) {
+            mWaveEncoder.stop();
+        }
+        mWaveEncoder = new WaveEncoder();
+        boolean isOpenOk;
         try {
-            isOpenOk = mWaveEncoder.open(mFileDir + "/" + System.currentTimeMillis() + ".wav", AudioCapture.DEFAULT_SAMPLE_RATE,
-                    (short) 1, (short) 16);
+            isOpenOk = mWaveEncoder.prepare(mFileDir + "/" + System.currentTimeMillis() + ".wav");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             isOpenOk = false;
         }
-        if (isOpenOk) {
-            mAudioCapture.start();
+        if (isOpenOk){
+            mWaveEncoder.start();
         } else {
             Toast.makeText(this, "打开文件失败!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void performCaptureAndAACEncode() {
+        if (mAACEncoder != null) {
+            mAACEncoder.stop();
+        }
+        mAACEncoder = new AACEncoder();
+        try {
+            DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(mFileDir + "/" +
+                System.currentTimeMillis() + ".aac"));
+            mAACEncoder.setDataOutputStream(outputStream);
+            mAACEncoder.start();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
