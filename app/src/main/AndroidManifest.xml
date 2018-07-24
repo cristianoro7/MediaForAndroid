@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".audio.AudioActivity"/>
+        <activity android:name=".jni.JNIActivity"/>
     </application>
 
     <!-- 录音权限 -->

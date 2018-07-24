@@ -45,6 +45,8 @@ public class AudioPlayer implements AudioCapture.OnAudioCaptureListener {
             return false;
         }
         isStart = true;
+        audioTrack.play();
+        Log.d(TAG, "play: start");
         return true;
     }
 
@@ -52,13 +54,9 @@ public class AudioPlayer implements AudioCapture.OnAudioCaptureListener {
         if (!isStart) {
             return false;
         }
-        Log.d(TAG, "play: start");
-
         if (audioTrack.write(audioData, offset, size) != size) {
             Log.d(TAG, "play: size != write size");
         }
-        audioTrack.play();
-        Log.d(TAG, "play: after play");
         return true;
     }
 
