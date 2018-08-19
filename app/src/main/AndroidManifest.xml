@@ -19,6 +19,7 @@
         </activity>
         <activity android:name=".audio.AudioActivity"/>
         <activity android:name=".jni.JNIActivity"/>
+        <activity android:name=".jni.SLAudioActivity" />
     </application>
 
     <!-- 录音权限 -->

@@ -122,7 +122,7 @@ public class AudioCapture {
 
     public int readData(byte[] buffer, int off, int len) {
         if (isUsingCallBack) {
-            throw new IllegalStateException("in callback mode, please fet pcm data via call back!");
+            throw new IllegalStateException("in callback mode, please fetch pcm data via call back!");
         }
         if (buffer != null) {
             int ret = mAudioRecord.read(buffer, off, len);
