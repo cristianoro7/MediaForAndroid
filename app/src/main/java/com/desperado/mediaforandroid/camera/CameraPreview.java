@@ -1,23 +1,65 @@
 package com.desperado.mediaforandroid.camera;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.SurfaceView;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.View;
 
 /**
  * Created by kamlin on 18-7-1.
- * 未完成
+ * 预览兼容类, 定义了与相机预览相关的操作, 并且提供向后兼容管理
  */
-public class CameraPreview extends SurfaceView {
-    public CameraPreview(Context context) {
-        super(context);
+public abstract class CameraPreview {
+
+    private int mWidth;
+    private int mHeight;
+
+    private Callback mCallback;
+
+    public void setSize(int width, int height) {
+        mWidth = width;
+        mHeight = height;
     }
 
-    public CameraPreview(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public int getHeight() {
+        return mHeight;
     }
 
-    public CameraPreview(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public int getWidth() {
+        return mWidth;
+    }
+
+    abstract Surface getSurface();
+
+    abstract Class<?> getOutputClass();
+
+    abstract View getView();
+
+    abstract void setDisplayOrientation(int displayOrientation);
+
+    abstract boolean isReady();
+
+    SurfaceHolder getSurfaceHolder() {
+        return null;
+    }
+
+    Object getSurfaceTexture() {
+        return null;
+    }
+
+    void setBufferSize(int width, int height) {
+    }
+
+    interface Callback {
+        void onSurfaceChange();
+    }
+
+    public void setCallback(Callback mCallback) {
+        this.mCallback = mCallback;
+    }
+
+    protected void dispatchSurfaceChanged() {
+        if (mCallback != null) {
+            mCallback.onSurfaceChange();
+        }
     }
 }
