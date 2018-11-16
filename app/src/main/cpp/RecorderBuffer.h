@@ -8,7 +8,7 @@
 #include <stdint.h>
 
 struct SampleBuf {
-    short *buffer;
+    char *buffer;
     uint32_t size;
 };
 

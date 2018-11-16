@@ -375,3 +375,147 @@ vertex shader计算每个vertex在屏幕的最终位置, 接着OpenGL将vertex�
     }
 ```
 
+### 获取uniform的句柄
+
+在fragment shader中，我们定义了uniform类型的color变量， 在为它赋值之前，我们需要获取到它的句柄
+
+```java
+public static final String U_COLOR = "u_Color";
+private int uColorLocation;
+
+public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+	uColorLocation = GLES20.glGetUniformLocation(programId, U_COLOR); //获取句柄
+}
+
+```
+
+### 获取attribute的句柄
+
+获取attribute句柄的逻辑跟uniform差不多
+
+```java
+private int aPositionLocation;
+public static final String A_POSITION = "a_Position";
+
+public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+	aPositionLocation = GLES20.glGetAttribLocation(programId, A_POSITION);
+}
+```
+
+### 绑定数据
+
+获取得到attribute句柄后， 下一步就是要告诉OpenGL去哪里获取数据
+
+```java
+public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+    vertexData.position(0);
+	GLES20.glVertexAttribPointer(aPositionLocation, POSITION_COMPONENT_COUNT, GLES20.GL_FLOAT, false, 0, vertexData);
+}
+```
+
+### 绘制数据
+
+```java
+GLES20.glDrawArrays(GLES20.GL_TRIANGLE, 0, 6);
+```
+
+
+
+## 平滑着色
+
+在这之前，我们的fragment shader中的颜色是一个uniform类型， 表示所有的点都是同一个颜色， 那如果需要让不同的点有不同的颜色呢？这时候就不能用uniform类型了， 需要在vertex shader中为每个vertex定义一个颜色值。
+
+```java
+attribute vec4 a_Position;
+attribute vec4 a_Color;
+
+uniform mat4 u_Matrix;
+
+varying vec4 v_Color;
+
+void main() {
+    gl_Position = u_Matrix * a_Position;
+    gl_PointSize = 10.0;
+    v_Color = a_Color;
+}
+```
+
+varying是一个特殊的类型， 它可以让线或者三角形平滑着色。举一个直线作为例子：如果顶点0的a_Color为红色，顶点1的a_Color颜色为绿色， 然后我们再shader中， 将a_Color赋值给v_Color， 来告诉OpenGL，在fragment着色的时候， 每个fragment接收的是一个绿色和红色混合后的值。越接近顶点0的fragment，颜色就会越红，越接近顶点1的fragment，颜色就会越绿。类似一个从红色到绿色渐变的一个效果。
+
+因此，我们还得在fragment shader中接收混合后的v_Color值
+
+```java
+precision mediump float;
+
+varying vec4 v_Color;
+
+void main() {
+    gl_FragColor = v_Color;
+}
+```
+
+## 调整屏幕宽高比
+
+在OpenGL中， 所有需要渲染的物体都是映射在x，y和z轴上的【-1,1】这个区间。这个范围的坐标被称为归一化设备坐标。它跟屏幕实际的尺寸是没有关系的。
+
+在之前编码中，都是直接将坐标传递给OpenGL，没有考虑到设备的实际尺寸，如果直接使用的话，会出现物体被压缩或者拉伸的现象。
+
+![1541491686675](E:\我的坚果云\Note\图片资源\OpenGL5.png)
+
+为了解决这个问题，需要将屏幕的尺寸考虑进来，一种可行的方法是：短边以【-1,1】作为基准，长边的坐标取值为【-长边/短边，长边/短边】。
+
+现在讲屏幕尺寸考虑进来后， 我们得到一个虚拟空间的坐标， 所以还得用正交投影将虚拟坐标转为归一化设备坐标。
+
+在Android中， 我们可以使用android。opengl中的Matrix.orthoM()方法生成一个正交投影
+
+![1541506940131](E:\我的坚果云\Note\图片资源\OpenGL6.png)
+
+调用上面的方法后，会生成下面的一个矩阵：
+
+![1541507063219](E:\我的坚果云\Note\图片资源\OpenGL7.png)
+
+上面的原理跟矩阵平移的原理差不多，只不过Z轴是取负的，因为物体离得越远，z轴的坐标值就最小。
+
+修改vertex shader
+
+```java
+attribute vec4 a_Position;
+attribute vec4 a_Color;
+
+uniform mat4 u_Matrix;
+
+varying vec4 v_Color;
+
+void main() {
+    gl_Position = u_Matrix * a_Position;
+    gl_PointSize = 10.0;
+    v_Color = a_Color;
+}
+```
+
+新增一个mat4类型，表示一个4x4的矩阵。接下来根据屏幕宽高比来创建一个投影矩阵，然后设置给OpenGL就行了
+
+```java
+               @Override
+        public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+            GLES20.glClearColor(0.0f, 0, 0, 1.0f);
+            uMatrixLocation = GLES20.glGetUniformLocation(programId, U_MATRIX);
+        } 
+	   @Override
+        public void onSurfaceChanged(GL10 gl, int width, int height) {
+            GLES20.glViewport(0, 0, width, height);
+            float aspectRatio = width > height ? (float) width / (float) height : (float) height / (float) width; //相除之前要转成float, 不然会丢失精度
+            if (width > height) {
+                Matrix.orthoM(projectionMatrix, 0, -aspectRatio, aspectRatio, -1f, 1f, -1f, 1f);
+            } else {
+                Matrix.orthoM(projectionMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
+            }
+        }
+        @Override
+        public void onDrawFrame(GL10 gl) {
+            GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+            GLES20.glUniformMatrix4fv(uMatrixLocation, 1, false, projectionMatrix, 0);
+        }
+```
+
+正交投影是不管z是多少都一样大， 透视投影则相反；前者用于2d，后者用于3d

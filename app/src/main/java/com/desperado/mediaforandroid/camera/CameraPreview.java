@@ -13,7 +13,7 @@ public abstract class CameraPreview {
     private int mWidth;
     private int mHeight;
 
-    private Callback mCallback;
+    private CameraPreviewLifeCircle mCameraPreviewLifeCircle;
 
     public void setSize(int width, int height) {
         mWidth = width;
@@ -49,17 +49,24 @@ public abstract class CameraPreview {
     void setBufferSize(int width, int height) {
     }
 
-    interface Callback {
-        void onSurfaceChange();
-    }
-
-    public void setCallback(Callback mCallback) {
-        this.mCallback = mCallback;
+    public void setCallback(CameraPreviewLifeCircle mCameraPreviewLifeCircle) {
+        this.mCameraPreviewLifeCircle = mCameraPreviewLifeCircle;
     }
 
     protected void dispatchSurfaceChanged() {
-        if (mCallback != null) {
-            mCallback.onSurfaceChange();
+        if (mCameraPreviewLifeCircle != null) {
+            mCameraPreviewLifeCircle.onSurfaceChange();
         }
+    }
+
+    protected void dispatchSurfaceCreate() {
+        if (mCameraPreviewLifeCircle != null) {
+            mCameraPreviewLifeCircle.onSurfaceChange();
+        }
+    }
+
+    interface CameraPreviewLifeCircle {
+        void onSurfaceChange();
+        void onSurfaceCreate();
     }
 }

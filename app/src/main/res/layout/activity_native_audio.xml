@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/pcm_btn_capture_play"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="PCM录音"
+            android:layout_margin="7dp"
+            android:background="@drawable/audio_shape_round_button"
+            android:textColor="#FFFFFF"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/pcm_btn_capture_play_stop"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="PCM录音停止"
+            android:layout_margin="7dp"
+            android:background="@drawable/audio_shape_round_button"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+
+    <!--<LinearLayout-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<Button-->
+            <!--android:id="@+id/audio_btn_aac_encoder"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:text="AAC录音开始"-->
+            <!--android:layout_margin="7dp"-->
+            <!--android:background="@drawable/audio_shape_round_button"-->
+            <!--android:textColor="#FFFFFF"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/audio_btn_aac_encoder_stop"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:text="AAC录音结束"-->
+            <!--android:layout_margin="7dp"-->
+            <!--android:background="@drawable/audio_shape_round_button"-->
+            <!--android:textColor="#FFFFFF"/>-->
+
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<Button-->
+            <!--android:id="@+id/audio_btn_capture_wave_encoder"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:text="WAVE录音开始"-->
+            <!--android:layout_margin="7dp"-->
+            <!--android:background="@drawable/audio_shape_round_button"-->
+            <!--android:textColor="#FFFFFF"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/audio_btn_capture_wave_encoder_stop"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:text="WAV录音停止"-->
+            <!--android:layout_margin="7dp"-->
+            <!--android:background="@drawable/audio_shape_round_button"-->
+            <!--android:textColor="#FFFFFF"/>-->
+
+
+    <!--</LinearLayout>-->
+
+</LinearLayout>

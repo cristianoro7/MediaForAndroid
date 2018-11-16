@@ -54,7 +54,7 @@ public class SurfaceViewPreview extends CameraPreview implements SurfaceHolder.C
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
+        dispatchSurfaceCreate();
     }
 
     @Override

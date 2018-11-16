@@ -20,8 +20,4 @@ void convertToSLSampleFormat(SLAndroidDataFormat_PCM_EX *slAndroidDataFormat_pcm
     slAndroidDataFormat_pcm_ex->endianness = SL_BYTEORDER_LITTLEENDIAN;
     slAndroidDataFormat_pcm_ex->bitsPerSample = format->pcmFormat;
     slAndroidDataFormat_pcm_ex->containerSize = format->pcmFormat;
-
-    slAndroidDataFormat_pcm_ex->bitsPerSample = SL_PCMSAMPLEFORMAT_FIXED_16;
-    slAndroidDataFormat_pcm_ex->containerSize = SL_PCMSAMPLEFORMAT_FIXED_16;
-    slAndroidDataFormat_pcm_ex->formatType = SL_ANDROID_DATAFORMAT_PCM_EX;
 }

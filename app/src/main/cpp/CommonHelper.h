@@ -10,7 +10,7 @@
 #include <SLES/OpenSLES_Android.h>
 #include <string.h>
 #include <assert.h>
-
+#include "SampleFormat.h"
 #include "SLAudioRecorder.h"
 #include "RecorderBuffer.h"
 
@@ -21,13 +21,7 @@
         (void) (x); \
     } while(0)
 
-typedef struct SampleFormat {
-    uint32_t sampleRate;
-    uint32_t framesPerBuffer;
-    uint16_t channels;
-    uint16_t pcmFormat;
-    uint32_t representation;
-} SampleFormat;
+
 
 typedef struct SLAudioEngine_ {
     SLmilliHertz fastPathSampleRate;

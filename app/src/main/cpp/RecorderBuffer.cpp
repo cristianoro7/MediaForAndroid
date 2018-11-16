@@ -7,7 +7,7 @@
 RecorderBuffer::RecorderBuffer(int bufferSize) {
     buffer = new SampleBuf[2];
     for (int i = 0; i < 2; ++i) {
-        buffer[i].buffer = new short[bufferSize];
+        buffer[i].buffer = new char[bufferSize];
         buffer[i].size = static_cast<uint32_t>(bufferSize);
     }
     index = -1;

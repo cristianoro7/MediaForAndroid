@@ -13,7 +13,7 @@ Java_com_desperado_mediaforandroid_jni_SLAudioApi_initSLEngine(JNIEnv *env, jcla
     SLresult sLresult;
     memset(&slAudioEngine, 0, sizeof(slAudioEngine));
 
-    slAudioEngine.fastPathSampleRate = static_cast<SLmilliHertz>(sampleRate);
+    slAudioEngine.fastPathSampleRate = static_cast<SLmilliHertz>(sampleRate) * 1000;
     slAudioEngine.fastPathFramesPerBuffer = static_cast<uint32_t>(framesPerBuffer);
     slAudioEngine.sampleChannels = 1;
     slAudioEngine.bitsPerSample = SL_PCMSAMPLEFORMAT_FIXED_16;
@@ -35,18 +35,36 @@ Java_com_desperado_mediaforandroid_jni_SLAudioApi_initSLEngine(JNIEnv *env, jcla
 }
 extern "C"
 JNIEXPORT jboolean JNICALL
-Java_com_desperado_mediaforandroid_jni_SLAudioApi_createAudioRecorder(JNIEnv *env, jclass type) {
+Java_com_desperado_mediaforandroid_jni_SLAudioApi_createAudioRecorder(JNIEnv *env, jclass type,
+                                                                      jstring fp) {
     SampleFormat sampleFormat;
     memset(&sampleFormat, 0, sizeof(sampleFormat));
     sampleFormat.pcmFormat = slAudioEngine.bitsPerSample;
     sampleFormat.framesPerBuffer = slAudioEngine.fastPathFramesPerBuffer;
     sampleFormat.channels = slAudioEngine.sampleChannels;
     sampleFormat.sampleRate = slAudioEngine.fastPathSampleRate;
+    const char *filePath = env->GetStringUTFChars(fp, NULL);
+    if (filePath == NULL) {
+        return JNI_FALSE;
+    }
 
     slAudioEngine.slAudioRecorder = new SLAudioRecorder(sampleFormat, slAudioEngine.slEngineItf,
-                                                        *slAudioEngine.recorderBuffer);
+                                                        *slAudioEngine.recorderBuffer, filePath);
     if (!slAudioEngine.slAudioRecorder) {
         return JNI_FALSE;
     }
     return JNI_TRUE;
+}
+
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_com_desperado_mediaforandroid_jni_SLAudioApi_start(JNIEnv *env, jclass type) {
+    slAudioEngine.slAudioRecorder->start();
+    return JNI_TRUE;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_desperado_mediaforandroid_jni_SLAudioApi_stop(JNIEnv *env, jclass type) {
+    slAudioEngine.slAudioRecorder->stop();
 }

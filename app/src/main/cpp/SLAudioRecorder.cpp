@@ -3,13 +3,14 @@
 //
 
 #include "SLAudioRecorder.h"
+#include "CommonHelper.h"
 
 void bqRecorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context) {
     (static_cast<SLAudioRecorder *>(context))->processCallback(bq);
 }
 
 SLAudioRecorder::SLAudioRecorder(SampleFormat sampleFormat, SLEngineItf slEngineItf,
-                                 RecorderBuffer &buf) : recorderBuffer(buf) {
+                                 RecorderBuffer &buf, std::string fp) : recorderBuffer(buf), filePath(fp) {
     SLresult sLresult;
     SLAndroidDataFormat_PCM_EX format_pcm_ex;
     convertToSLSampleFormat(&format_pcm_ex, &sampleFormat);
@@ -21,8 +22,8 @@ SLAudioRecorder::SLAudioRecorder(SampleFormat sampleFormat, SLEngineItf slEngine
     SLDataSource dataSource = {
             &locator_ioDevice, NULL
     };
-    SLDataLocator_AndroidBufferQueue locator_androidBufferQueue = {
-            SL_DATALOCATOR_ANDROIDBUFFERQUEUE, 2
+    SLDataLocator_AndroidSimpleBufferQueue locator_androidBufferQueue = {
+            SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE, 2
     };
 
     SLDataSink dataSink = {
@@ -57,15 +58,33 @@ SLboolean SLAudioRecorder::start() {
     SLASSTER(sLresult);
     sLresult = (*bufferQueueItf)->Clear(bufferQueueItf);
     SLASSTER(sLresult);
-    sLresult = (*bufferQueueItf)->Enqueue(bufferQueueItf, recorderBuffer.getFreeBuffer().buffer,
-                                          recorderBuffer.getFreeBuffer().size);
+    SampleBuf buffer = recorderBuffer.getFreeBuffer();
+    sLresult = (*bufferQueueItf)->Enqueue(bufferQueueItf, buffer.buffer, buffer.size);
     SLASSTER(sLresult);
 
     sLresult = (*recordItf)->SetRecordState(recordItf, SL_RECORDSTATE_RECORDING);
     SLASSTER(sLresult);
+
+    fileWriter.open(filePath, std::ios::out);
     return SL_BOOLEAN_TRUE;
 }
 
 void SLAudioRecorder::processCallback(SLAndroidSimpleBufferQueueItf bq) {
     //选择: 1. 编码 2. 实时播放 3. 写成wav格式保存
+    if (!isStop) {
+        fileWriter.write(recorderBuffer.getFillBuffer().buffer, recorderBuffer.getFillBuffer().size);
+        SampleBuf buf = recorderBuffer.getFreeBuffer();
+        (*bq)->Enqueue(bufferQueueItf, buf.buffer, buf.size);
+    } else {
+
+    }
+}
+
+void SLAudioRecorder::stop() {
+    if (!isStop) {
+        isStop = true;
+        fileWriter.flush();
+        fileWriter.close();
+        (*recordItf)->SetRecordState(recordItf, SL_RECORDSTATE_STOPPED);
+    }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".todo.MainActivity"
+    tools:context=".MainActivity"
     android:orientation="vertical">
 
     <Button
@@ -24,5 +24,28 @@
         android:textColor="#FFFFFF"
         android:text="JNI"
         android:id="@+id/main_jni"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="13dp"
+        android:background="@drawable/audio_shape_round_button"
+        android:textColor="#FFFFFF"
+        android:text="NativeAudio"
+        android:id="@+id/main_native_audio"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="13dp"
+        android:background="@drawable/audio_shape_round_button"
+        android:textColor="#FFFFFF"
+        android:text="CameraActivity"
+        android:id="@+id/main_camera"/>
+
+    <View
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:id="@+id/test"/>
 
 </LinearLayout>

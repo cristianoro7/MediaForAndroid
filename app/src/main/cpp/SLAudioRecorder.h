@@ -5,7 +5,13 @@
 #ifndef MEDIAFORANDROID_SLAUDIORECORDER_H
 #define MEDIAFORANDROID_SLAUDIORECORDER_H
 
-#include "CommonHelper.h"
+#include "RecorderBuffer.h"
+#include "SampleFormat.h"
+#include <SLES/OpenSLES.h>
+#include <SLES/OpenSLES_Android.h>
+#include <string>
+#include <fstream>
+#include <iostream>
 
 class SLAudioRecorder {
 
@@ -14,12 +20,17 @@ private:
     SLRecordItf recordItf;
     SLAndroidSimpleBufferQueueItf bufferQueueItf;
     RecorderBuffer recorderBuffer;
+    bool isStop;
+    std::string filePath;
+    std::ofstream fileWriter;
 
 public:
-    explicit SLAudioRecorder(SampleFormat sampleFormat, SLEngineItf slEngineItf, RecorderBuffer &buf);
+    explicit SLAudioRecorder(SampleFormat sampleFormat, SLEngineItf slEngineItf, RecorderBuffer &buf, std::string fp);
 
     void processCallback(SLAndroidSimpleBufferQueueItf bq);
 
     SLboolean start();
+
+    void stop();
 };
 #endif //MEDIAFORANDROID_SLAUDIORECORDER_H

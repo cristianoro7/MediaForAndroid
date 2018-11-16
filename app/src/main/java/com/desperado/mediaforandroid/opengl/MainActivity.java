@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.desperado.mediaforandroid.R;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -116,10 +118,10 @@ public class MainActivity extends AppCompatActivity {
             int vertexShader = ShaderHelper.compileVertexShader(vertexShaderSource);
             int fragmentShader = ShaderHelper.compileFragmentShader(fragmentShaderSource);
             programId = ShaderHelper.linkProgram(vertexShader, fragmentShader);
-            if (BuildConfig.DEBUG) {
-                boolean isValid = ShaderHelper.validateProgram(programId);
-                Log.d("CR7", "onSurfaceCreated: " + isValid);
-            }
+//            if (BuildConfig.DEBUG) {
+//                boolean isValid = ShaderHelper.validateProgram(programId);
+//                Log.d("CR7", "onSurfaceCreated: " + isValid);
+//            }
             GLES20.glUseProgram(programId);
 
             uColorLocation = GLES20.glGetUniformLocation(programId, U_COLOR);
