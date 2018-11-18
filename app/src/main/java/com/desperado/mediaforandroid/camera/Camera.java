@@ -23,6 +23,8 @@ abstract class Camera {
 
     protected CameraPreview mCameraPreview;
 
+    protected OnPreviewFrameCallback mOnPreviewFrameCallback;
+
     Camera(Callback callback, CameraPreview preview) {
         this.mCallback = callback;
         this.mCameraPreview = preview;
@@ -56,9 +58,17 @@ abstract class Camera {
 
     abstract AspectRatio getAspectRatio();
 
+    public void setOnPreviewFrameCallback(OnPreviewFrameCallback mOnPreviewFrameCallback) {
+        this.mOnPreviewFrameCallback = mOnPreviewFrameCallback;
+    }
+
     interface Callback {
-        void onCameraOpen();
+        void onCameraOpen(int width, int height);
         void onCameraClose();
         void onPictureTaken(byte[] data);
+    }
+
+    interface OnPreviewFrameCallback {
+        void onPreviewFrame(byte[] data, Camera camera);
     }
 }

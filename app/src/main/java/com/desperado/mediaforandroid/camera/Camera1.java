@@ -13,11 +13,13 @@ import java.util.SortedSet;
 /**
  * Created by kamlin on 18-8-25.
  */
-public class Camera1 extends Camera implements CameraPreview.CameraPreviewLifeCircle {
+public class Camera1 extends Camera implements CameraPreview.CameraPreviewLifeCircle, android.hardware.Camera.PreviewCallback {
 
     private static final String TAG = "Camera1";
 
     private static final int INVALID_CAMERA_ID = -1;
+
+    private Size size;
 
     private static final SparseArrayCompat<String> FLASH_MAP = new SparseArrayCompat<>(); //闪光灯映射map
 
@@ -92,14 +94,14 @@ public class Camera1 extends Camera implements CameraPreview.CameraPreviewLifeCi
         List<android.hardware.Camera.Size> supportPictureSizes = mCameraParameters.getSupportedPictureSizes();
         for (android.hardware.Camera.Size s : supportPictureSizes) {
             mPictureSizes.add(new Size(s.width, s.height));
-            Log.d(TAG, "start: picture size: " + s.toString());
+            Log.d(TAG, "start: picture size: " + s.width + ", " + s.height);
         }
         if (mAspectRatio == null) {
             mAspectRatio = AspectRatio.of(16, 9);
         }
         configCameraParameters();
         mCamera.setDisplayOrientation(calcDisplayOrientation(mDisplayOrientation));
-        mCallback.onCameraOpen();
+        mCallback.onCameraOpen(size.getWidth(), size.getHeight());
     }
 
     private void releaseCamera() {
@@ -116,7 +118,7 @@ public class Camera1 extends Camera implements CameraPreview.CameraPreviewLifeCi
         if (sizes == null) {
             throw new IllegalStateException("unsupport size");
         }
-        Size size = findBestSize(sizes);
+        size = findBestSize(sizes);
         Size pictureSize = mPictureSizes.sizes(mAspectRatio).last();
         if (mShowingPreview) {
             mCamera.stopPreview();
@@ -203,6 +205,7 @@ public class Camera1 extends Camera implements CameraPreview.CameraPreviewLifeCi
                 } else {
                     mCamera.setPreviewTexture((SurfaceTexture) mCameraPreview.getSurfaceTexture());
                 }
+                mCamera.setPreviewCallback(this);
                 mCamera.startPreview();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -341,5 +344,12 @@ public class Camera1 extends Camera implements CameraPreview.CameraPreviewLifeCi
     @Override
     public void onSurfaceCreate() {
 
+    }
+
+    @Override
+    public void onPreviewFrame(byte[] data, android.hardware.Camera camera) {
+        if (mOnPreviewFrameCallback != null) {
+            mOnPreviewFrameCallback.onPreviewFrame(data, this);
+        }
     }
 }

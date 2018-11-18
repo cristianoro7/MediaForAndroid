@@ -6,8 +6,12 @@ import android.media.MediaFormat;
 import android.media.MediaMuxer;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -67,15 +71,16 @@ public class VideoEditor {
         MediaExtractor videoExtractor = new MediaExtractor();
         MediaExtractor audioExtractor = new MediaExtractor();
         try {
-            videoExtractor.setDataSource(videoPath);
+            InputStream inputStream = new FileInputStream(new File(videoPath));
+            videoExtractor.setDataSource(((FileInputStream) inputStream).getFD());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            audioExtractor.setDataSource(audioPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+////            audioExtractor.setDataSource(audioPath);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         MediaFormat videoFormat = null;
         int videoTrack = 0;
@@ -87,18 +92,18 @@ public class VideoEditor {
             }
         }
 
-        MediaFormat audioFormat = null;
-        int audioTrack = 0;
-        for (int i = 0; i < audioExtractor.getTrackCount(); i++) {
-            audioFormat = audioExtractor.getTrackFormat(i);
-            if (audioFormat.getString(MediaFormat.KEY_MIME).equals("audio/")) {
-                audioTrack = i;
-                break;
-            }
-        }
+//        MediaFormat audioFormat = null;
+//        int audioTrack = 0;
+//        for (int i = 0; i < audioExtractor.getTrackCount(); i++) {
+//            audioFormat = audioExtractor.getTrackFormat(i);
+//            if (audioFormat.getString(MediaFormat.KEY_MIME).equals("audio/")) {
+//                audioTrack = i;
+//                break;
+//            }
+//        }
 
         videoExtractor.selectTrack(videoTrack);
-        audioExtractor.selectTrack(audioTrack);
+//        audioExtractor.selectTrack(audioTrack);
 
         MediaCodec.BufferInfo videoBufferInfo = new MediaCodec.BufferInfo();
         MediaCodec.BufferInfo audioBufferInfo = new MediaCodec.BufferInfo();
@@ -106,7 +111,7 @@ public class VideoEditor {
         try {
             MediaMuxer mediaMuxer = new MediaMuxer(outPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
             int writeVideoIndex = mediaMuxer.addTrack(videoFormat);
-            int writeAudioIndex = mediaMuxer.addTrack(audioFormat);
+//            int writeAudioIndex = mediaMuxer.addTrack(audioFormat);
             mediaMuxer.start();
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024 * 1000);
@@ -128,8 +133,8 @@ public class VideoEditor {
             }
 
             long audioTs = getSimpleTime(audioExtractor, byteBuffer);
-            audioExtractor.unselectTrack(audioTrack);
-            audioExtractor.selectTrack(audioTrack);
+//            audioExtractor.unselectTrack(audioTrack);
+//            audioExtractor.selectTrack(audioTrack);
 
             while (true) {
                 int size = audioExtractor.readSampleData(byteBuffer, 0);
@@ -140,12 +145,13 @@ public class VideoEditor {
                 audioBufferInfo.offset = 0;
                 audioBufferInfo.presentationTimeUs += audioTs;
                 audioBufferInfo.flags = audioExtractor.getSampleFlags();
-                mediaMuxer.writeSampleData(writeAudioIndex, byteBuffer, audioBufferInfo);
+//                mediaMuxer.writeSampleData(writeAudioIndex, byteBuffer, audioBufferInfo);
             }
 
             mediaMuxer.release();
             audioExtractor.release();
             videoExtractor.release();
+            Log.d("CR7", "muxVideo: ");
         } catch (IOException e) {
             e.printStackTrace();
         }

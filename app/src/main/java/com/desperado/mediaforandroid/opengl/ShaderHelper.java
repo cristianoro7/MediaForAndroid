@@ -64,4 +64,8 @@ public class ShaderHelper {
         return validateStatus[0] != INVALID_ID;
     }
 
+    public void loadTexture() {
+//        GLES20.glGenTextures();
+    }
+
 }
